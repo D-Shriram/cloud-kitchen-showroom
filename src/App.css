@@ -59,6 +59,65 @@ h1 em {
   font-weight: 400;
 }
 
+.brand-title,
+.name-editor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-name {
+  margin-top: 7px;
+  padding: 4px 8px;
+  border: 1px solid #e1d8c8;
+  border-radius: 2px;
+  background: transparent;
+  color: #827b6e;
+  font: 10px 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.edit-name:hover,
+.name-editor button:hover:not(:disabled) {
+  border-color: #b89a64;
+  color: #80653b;
+}
+
+.name-editor {
+  margin-top: 5px;
+}
+
+.name-editor input {
+  width: min(330px, 55vw);
+  min-width: 150px;
+  padding: 4px 7px;
+  border: 1px solid #c9a96b;
+  border-radius: 2px;
+  outline: none;
+  background: #fffefa;
+  color: #26241f;
+  font: 24px/1.2 Georgia, 'Times New Roman', serif;
+}
+
+.name-editor button {
+  padding: 7px 10px;
+  border: 1px solid #d9d1c2;
+  border-radius: 2px;
+  background: #fbfaf6;
+  color: #4a453b;
+  font: 11px 'Segoe UI', system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.name-editor button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.name-editor button.cancel {
+  color: #827b6e;
+}
+
 .edition {
   margin-left: auto;
   color: #827b6e;

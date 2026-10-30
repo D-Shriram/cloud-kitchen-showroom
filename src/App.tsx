@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { layouts, SIZE, type Layout } from './layouts'
 import { KitchenScene } from './scene/KitchenScene'
 import './App.css'
@@ -8,15 +8,71 @@ export default function App() {
   const [layoutId, setLayoutId] = useState(layouts[0].id)
   const [walkMode, setWalkMode] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [kitchenName, setKitchenName] = useState(
+    () => window.localStorage.getItem('kitchenName')?.trim() || 'Atelier Kitchen',
+  )
+  const [nameDraft, setNameDraft] = useState(kitchenName)
+  const [isEditingName, setIsEditingName] = useState(false)
   const layout = layouts.find((item) => item.id === layoutId) ?? layouts[0]
   const selected = layout.rooms.find((room) => room.id === selectedId) ?? null
+  const nameWords = kitchenName.split(/\s+/)
+
+  function saveKitchenName(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const nextName = nameDraft.trim()
+    if (!nextName) return
+    window.localStorage.setItem('kitchenName', nextName)
+    setKitchenName(nextName)
+    setIsEditingName(false)
+  }
 
   return (
     <div className="app">
       <header className="top">
         <div>
           <p className="kicker">Cloud kitchen <span /> Signature collection · 60 × 60 ft</p>
-          <h1>Atelier <em>Kitchen</em></h1>
+          {isEditingName ? (
+            <form className="name-editor" onSubmit={saveKitchenName}>
+              <input
+                aria-label="Kitchen name"
+                autoFocus
+                maxLength={50}
+                value={nameDraft}
+                onChange={(event) => setNameDraft(event.target.value)}
+              />
+              <button type="submit" disabled={!nameDraft.trim()}>
+                Save
+              </button>
+              <button
+                type="button"
+                className="cancel"
+                onClick={() => {
+                  setNameDraft(kitchenName)
+                  setIsEditingName(false)
+                }}
+              >
+                Cancel
+              </button>
+            </form>
+          ) : (
+            <div className="brand-title">
+              <h1>
+                {nameWords.length > 1 ? `${nameWords.slice(0, -1).join(' ')} ` : ''}
+                <em>{nameWords.at(-1)}</em>
+              </h1>
+              <button
+                type="button"
+                className="edit-name"
+                aria-label="Edit kitchen name"
+                onClick={() => {
+                  setNameDraft(kitchenName)
+                  setIsEditingName(true)
+                }}
+              >
+                Edit
+              </button>
+            </div>
+          )}
         </div>
         <p className="edition"><span /> PREMIUM DESIGN SERIES</p>
         <div className="modes">
