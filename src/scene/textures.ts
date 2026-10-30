@@ -17,10 +17,10 @@ function canvasTexture(draw: (ctx: CanvasRenderingContext2D, size: number) => vo
 
 export function wallTileTexture() {
   const texture = canvasTexture((ctx, size) => {
-    ctx.fillStyle = '#fbfaf6'
+    ctx.fillStyle = '#e9e3d8'
     ctx.fillRect(0, 0, size, size)
-    ctx.strokeStyle = '#e6e2d8'
-    ctx.lineWidth = 2
+    ctx.strokeStyle = '#d6cdbd'
+    ctx.lineWidth = 1.5
     const step = size / 4
     for (let i = 0; i <= size; i += step) {
       ctx.beginPath()
@@ -32,6 +32,14 @@ export function wallTileTexture() {
       ctx.lineTo(size, i)
       ctx.stroke()
     }
+    ctx.strokeStyle = 'rgba(255,255,255,0.28)'
+    ctx.lineWidth = 5
+    for (let y = 0; y < size; y += step) {
+      ctx.beginPath()
+      ctx.moveTo(0, y + 3)
+      ctx.lineTo(size, y + 3)
+      ctx.stroke()
+    }
   })
   texture.repeat.set(2, 2)
   return texture
@@ -39,14 +47,29 @@ export function wallTileTexture() {
 
 export function epoxyTexture() {
   const texture = canvasTexture((ctx, size) => {
-    ctx.fillStyle = '#eef1ec'
+    ctx.fillStyle = '#d4cfc3'
     ctx.fillRect(0, 0, size, size)
-    for (let i = 0; i < 900; i++) {
+    ctx.strokeStyle = 'rgba(112,101,82,0.12)'
+    ctx.lineWidth = 1
+    for (let i = 0; i <= size; i += size / 4) {
+      ctx.beginPath()
+      ctx.moveTo(i, 0)
+      ctx.lineTo(i, size)
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.moveTo(0, i)
+      ctx.lineTo(size, i)
+      ctx.stroke()
+    }
+    for (let i = 0; i < 1400; i++) {
       const x = Math.random() * size
       const y = Math.random() * size
-      const a = 0.04 + Math.random() * 0.05
-      ctx.fillStyle = Math.random() > 0.5 ? `rgba(255,255,255,${a})` : `rgba(180,190,175,${a})`
-      ctx.fillRect(x, y, 1.4, 1.4)
+      const a = 0.025 + Math.random() * 0.055
+      ctx.fillStyle =
+        Math.random() > 0.5
+          ? `rgba(255,252,242,${a})`
+          : `rgba(111,99,78,${a})`
+      ctx.fillRect(x, y, 1 + Math.random() * 2, 1 + Math.random() * 2)
     }
   }, 512)
   texture.repeat.set(20, 20)

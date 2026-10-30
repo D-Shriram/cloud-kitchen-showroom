@@ -187,16 +187,16 @@ function r(
 }
 
 export const roomTint: Record<RoomType, string> = {
-  'south-indian': '#f0c98a',
-  mughlai: '#f0a790',
-  chinese: '#e6d06a',
-  continental: '#8ec4ea',
-  desserts: '#e9a6c8',
-  prep: '#9fd49a',
-  walkin: '#8ed0e2',
-  dry: '#e0c08a',
-  wash: '#a9c4ea',
-  packing: '#ead06a',
-  receiving: '#d7c4a2',
-  staff: '#c8c8d6',
+  'south-indian': '#b9a17c',
+  mughlai: '#b58e7c',
+  chinese: '#b5aa75',
+  continental: '#829ba5',
+  desserts: '#b392a0',
+  prep: '#8fa28a',
+  walkin: '#7fa0a4',
+  dry: '#aa9677',
+  wash: '#8797aa',
+  packing: '#b4a16d',
+  receiving: '#a99d88',
+  staff: '#92919b',
 }

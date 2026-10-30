@@ -15,9 +15,10 @@ export default function App() {
     <div className="app">
       <header className="top">
         <div>
-          <p className="kicker">Cloud kitchen · Proposed GA · 60 × 60 ft</p>
-          <h1>Interior showroom</h1>
+          <p className="kicker">Cloud kitchen <span /> Signature collection · 60 × 60 ft</p>
+          <h1>Atelier <em>Kitchen</em></h1>
         </div>
+        <p className="edition"><span /> PREMIUM DESIGN SERIES</p>
         <div className="modes">
           <button
             type="button"
@@ -74,8 +75,9 @@ export default function App() {
         </div>
 
         <aside className="panel">
+          <p className="panel-eyebrow">FLOOR PLAN · {layout.code}</p>
           <p className="layout-name">
-            {layout.code} · {layout.name}
+            {layout.name}
           </p>
           <p className="summary">{layout.summary}</p>
           <Minimap layout={layout} selectedId={selectedId} onSelect={setSelectedId} />
@@ -99,8 +101,9 @@ export default function App() {
             <div className="card">
               <h2>Client walkthrough</h2>
               <p className="muted">
-                Click a labelled zone to fly in. All six options share the same bright hygiene
-                finish: white wall tile, epoxy floor, stainless equipment, north exhaust.
+                Select a zone to explore it in detail. A considered palette of warm stone,
+                brushed metal and soft architectural lighting brings a refined finish to every
+                working area.
               </p>
             </div>
           )}
@@ -157,18 +160,18 @@ function shortName(name: string) {
 
 function roomFill(type: string) {
   const map: Record<string, string> = {
-    'south-indian': '#f3e4c8',
-    mughlai: '#f4d4c8',
-    chinese: '#efe3b8',
-    continental: '#d5e6f4',
-    desserts: '#f3d5e4',
-    prep: '#d8ead4',
-    walkin: '#d4eaf0',
-    dry: '#eadcc8',
-    wash: '#d9e3f2',
-    packing: '#f3e7b8',
-    receiving: '#e8e0d0',
-    staff: '#e4e4ea',
+    'south-indian': '#b9a17c',
+    mughlai: '#b58e7c',
+    chinese: '#b5aa75',
+    continental: '#829ba5',
+    desserts: '#b392a0',
+    prep: '#8fa28a',
+    walkin: '#7fa0a4',
+    dry: '#aa9677',
+    wash: '#8797aa',
+    packing: '#b4a16d',
+    receiving: '#a99d88',
+    staff: '#92919b',
   }
   return map[type] ?? '#eee'
 }

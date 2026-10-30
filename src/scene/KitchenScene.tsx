@@ -42,11 +42,11 @@ export function KitchenScene({ layout, walkMode, selectedId, onSelect, focusId }
 
   return (
     <>
-      <color attach="background" args={['#e4eef6']} />
-      <hemisphereLight args={['#fff7ee', '#dfe8df', 0.7]} />
-      <ambientLight intensity={0.42} />
-      <directionalLight position={[18, 42, -28]} intensity={1.2} color="#fff6ea" />
-      <directionalLight position={[-20, 18, 24]} intensity={0.35} color="#f3fbff" />
+      <color attach="background" args={['#292923']} />
+      <hemisphereLight args={['#fff3dc', '#716b5d', 0.85]} />
+      <ambientLight intensity={0.58} />
+      <directionalLight position={[18, 42, -28]} intensity={1.65} color="#fff0d1" />
+      <directionalLight position={[-20, 18, 24]} intensity={0.55} color="#dce8e7" />
 
       <Building wallMap={wallMap} floorMap={floorMap} showCeiling={!walkMode} />
       {layout.rooms.map((room) => (
@@ -75,18 +75,29 @@ function Building({
   showCeiling: boolean
 }) {
   const wallMat = (
-    <meshStandardMaterial map={wallMap} color="#f7f4ee" roughness={0.82} metalness={0.04} />
+    <meshStandardMaterial map={wallMap} color="#f3eee4" roughness={0.68} metalness={0.06} />
   )
   return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.04, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.34, 0]}>
         <planeGeometry args={[SIZE + 8, SIZE + 8]} />
-        <meshStandardMaterial color="#d9e1d4" roughness={0.7} metalness={0.02} />
+        <meshStandardMaterial color="#34332e" roughness={0.82} metalness={0.12} />
+      </mesh>
+      <mesh position={[0, -0.16, 0]}>
+        <boxGeometry args={[SIZE + 0.7, 0.36, SIZE + 0.7]} />
+        <meshStandardMaterial color="#766344" metalness={0.68} roughness={0.3} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[SIZE, SIZE]} />
-        <meshStandardMaterial map={floorMap} color="#e7ebe4" roughness={0.45} metalness={0.06} />
+        <meshStandardMaterial
+          map={floorMap}
+          color="#e8e1d3"
+          roughness={0.32}
+          metalness={0.12}
+          envMapIntensity={0.65}
+        />
       </mesh>
+      <FloorInlay />
       {/* exterior walls */}
       <mesh position={[0, CEILING / 2, -HALF - WALL / 2]}>
         <boxGeometry args={[SIZE + WALL * 2, CEILING, WALL]} />
@@ -105,11 +116,12 @@ function Building({
         {wallMat}
       </mesh>
       <Windows />
+      <WallTrim />
       {showCeiling ? (
         <group>
           <mesh position={[0, CEILING, 0]}>
             <boxGeometry args={[SIZE + 1, 0.25, SIZE + 1]} />
-            <meshStandardMaterial color="#f6f3ec" roughness={0.9} />
+            <meshStandardMaterial color="#393832" roughness={0.85} />
           </mesh>
           {Array.from({ length: 6 }).map((_, ix) =>
             Array.from({ length: 6 }).map((_, iz) => (
@@ -117,11 +129,11 @@ function Building({
                 key={`${ix}-${iz}`}
                 position={[-22.5 + ix * 9, CEILING - 0.2, -22.5 + iz * 9]}
               >
-                <boxGeometry args={[6.5, 0.08, 2.2]} />
+                <boxGeometry args={[6.5, 0.1, 2.2]} />
                 <meshStandardMaterial
-                  color="#fffaf0"
-                  emissive="#fff4d6"
-                  emissiveIntensity={0.85}
+                  color="#fff6e3"
+                  emissive="#f7d99d"
+                  emissiveIntensity={1.1}
                 />
               </mesh>
             )),
@@ -131,12 +143,66 @@ function Building({
         Array.from({ length: 6 }).map((_, ix) =>
           Array.from({ length: 6 }).map((_, iz) => (
             <mesh key={`${ix}-${iz}`} position={[-22.5 + ix * 9, CEILING - 0.4, -22.5 + iz * 9]}>
-              <boxGeometry args={[6.5, 0.08, 2.2]} />
-              <meshStandardMaterial color="#fffaf0" emissive="#fff1c8" emissiveIntensity={1.1} />
+              <boxGeometry args={[6.5, 0.1, 2.2]} />
+              <meshStandardMaterial color="#fff6e3" emissive="#f7d99d" emissiveIntensity={1.35} />
             </mesh>
           )),
         )
       )}
+    </group>
+  )
+}
+
+function WallTrim() {
+  const trimMaterial = (
+    <meshStandardMaterial color="#c5a36d" metalness={0.72} roughness={0.26} />
+  )
+
+  return (
+    <group>
+      <mesh position={[0, 10.1, -HALF - WALL / 2]}>
+        <boxGeometry args={[SIZE, 0.1, WALL + 0.02]} />
+        {trimMaterial}
+      </mesh>
+      <mesh position={[0, 10.1, HALF + WALL / 2]}>
+        <boxGeometry args={[SIZE, 0.1, WALL + 0.02]} />
+        {trimMaterial}
+      </mesh>
+      <mesh position={[-HALF - WALL / 2, 10.1, 0]}>
+        <boxGeometry args={[WALL + 0.02, 0.1, SIZE]} />
+        {trimMaterial}
+      </mesh>
+      <mesh position={[HALF + WALL / 2, 10.1, 0]}>
+        <boxGeometry args={[WALL + 0.02, 0.1, SIZE]} />
+        {trimMaterial}
+      </mesh>
+    </group>
+  )
+}
+
+function FloorInlay() {
+  const railMaterial = (
+    <meshStandardMaterial color="#c1a06a" metalness={0.78} roughness={0.24} />
+  )
+
+  return (
+    <group position={[0, 0.025, 0]}>
+      <mesh position={[0, 0, -HALF + 0.75]}>
+        <boxGeometry args={[SIZE - 1.5, 0.05, 0.07]} />
+        {railMaterial}
+      </mesh>
+      <mesh position={[0, 0, HALF - 0.75]}>
+        <boxGeometry args={[SIZE - 1.5, 0.05, 0.07]} />
+        {railMaterial}
+      </mesh>
+      <mesh position={[-HALF + 0.75, 0, 0]}>
+        <boxGeometry args={[0.07, 0.05, SIZE - 1.5]} />
+        {railMaterial}
+      </mesh>
+      <mesh position={[HALF - 0.75, 0, 0]}>
+        <boxGeometry args={[0.07, 0.05, SIZE - 1.5]} />
+        {railMaterial}
+      </mesh>
     </group>
   )
 }
@@ -153,13 +219,13 @@ function Windows() {
         <mesh key={i} position={[p[0], p[1], p[2]]} rotation={[0, p[4], 0]}>
           <boxGeometry args={[6.2, 4.6, 0.16]} />
           <meshPhysicalMaterial
-            color="#e8f5ff"
+              color="#d7c6a3"
             transparent
-            opacity={0.45}
-            roughness={0.08}
-            metalness={0.05}
-            transmission={0.55}
-            thickness={0.3}
+              opacity={0.3}
+              roughness={0.14}
+              metalness={0.16}
+              transmission={0.68}
+              thickness={0.5}
           />
         </mesh>
       ))}
@@ -172,11 +238,11 @@ function NorthHood() {
     <group position={[0, 11.2, -HALF + 1.6]}>
       <mesh>
         <boxGeometry args={[SIZE - 4, 0.7, 3.6]} />
-        <meshStandardMaterial color="#c9d3db" metalness={0.78} roughness={0.22} />
+        <meshStandardMaterial color="#aeb3b1" metalness={0.84} roughness={0.19} />
       </mesh>
       <mesh position={[0, 0.55, 0]}>
         <boxGeometry args={[SIZE - 6, 0.12, 2.6]} />
-        <meshStandardMaterial color="#fff6e4" emissive="#ffe7b8" emissiveIntensity={0.7} />
+        <meshStandardMaterial color="#fff3d4" emissive="#f2d394" emissiveIntensity={0.85} />
       </mesh>
     </group>
   )
